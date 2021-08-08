@@ -1,0 +1,18 @@
+{%extends 'api/base.html'%}
+
+{%block title%} SIGN UP {%endblock%}
+
+{%block login%}
+<div class="container p-3 my-3 bg-light text-dark">   
+{% load crispy_forms_tags %}
+<form method = "post" class = form-group >
+    {%csrf_token %}
+    {{form|crispy}}
+    <p>Don't have an account ? Create one <a href="/sign-up"> here </a></p>    
+    <button type="submit" class="btn btn-success">Login</button>
+
+</form>
+</div>
+
+{%endblock%}
+

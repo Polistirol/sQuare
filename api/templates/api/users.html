@@ -1,0 +1,48 @@
+{% extends "api/base.html" %}
+{%load static%}
+{% block title %}User list{% endblock %}
+{% block extra_css %}
+<link href="{% static 'css/test.css' %}"  rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="row container d-flex justify-content-center">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 >sQuare family</h3>
+                            <p class="card-description"> {{users|length}} Users! </p>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>  </th>
+                                            <th> ID </th>
+                                            <th> Username </th>
+                                            <th> Status </th>
+                                            <th> Joined </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for user in users %} 
+                                        <!--https://img.icons8.com/color/36/000000/administrator-male.png-->                                        
+                                            <tr>
+                                                <td class="py-1"> <img src="{% static 'sqr.png' %}" alt="image" style="width: 40px;" > </td>
+                                                <td> {{user.id}}  </td>
+                                                <td> <a href={{user.id}}> {{user.username}}   </td>
+                                                <td> {{user.is_active}} </td>
+                                                <td> {{user.date_joined}}  </td>
+                                            </tr>
+                                        {%endfor%}
+                                    </tbody>                                
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

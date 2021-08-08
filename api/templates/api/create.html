@@ -1,0 +1,13 @@
+{%extends "api\base.html" %}
+{%block title%} Creation Page {%endblock%}
+
+
+{%block content%} 
+    Create Page
+    <form method = "post" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-outline-success" name = "new_post">Post</button>
+    </form>
+
+{%endblock%}

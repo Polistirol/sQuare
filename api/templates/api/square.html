@@ -1,0 +1,150 @@
+{%extends 'api/base.html'%}
+{% load static%}
+{%block style%}
+<link href="{% static 'css/square.css' %}"  rel="stylesheet" >
+{%endblock%}
+{%block title%} Square! {%endblock%}
+
+{%block square%}
+
+
+<!-- Display the countdown timer in an element -->
+<script>
+  var timeleft = "{{time}}";
+  const divmod = (x, y) => [Math.floor(x / y), x % y];
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById("timeleft").innerHTML = "Finished";
+    window.location.reload();
+  } else {
+    var t = divmod(timeleft,60)
+    var seconds = t[1];
+    var minutes = t[0];
+    document.getElementById("timeleft").innerHTML = minutes + " min "+ seconds +"sec";
+  }
+  timeleft -= 1;
+}, 1000);
+</script>
+
+<form class="view button" action= "" method = "post">
+  <div class="container p-3 my-3 bg-white text-dark">
+    <div class= row>
+      <div class = "col-sm"><h4>Aviable Credits = {{user.profile.credit}} </h4> </div>
+        <div class = "col-sm">
+              <div class = "bet btn">
+                  {% csrf_token %}
+                  <label for="quantity">How many credits ?</label>
+                  <input type="number" id="quantity" name="quantity" required value= "0" min="10" step=10 max={{user.profile.credit}}>
+                  <button  class="btn btn-secondary" name ="view" title="Tune in your ear and listen to all the secret messages! &#013; 10 credits = 10 minutes &#013; it's cumulable!" value = "view" type="submit">Lend an ear!</button> 
+              </div>
+        </div>   
+        <div class= "col-sm">
+          {% if user.profile.hasView %} 
+            <a>Time left: </a><div id="timeleft"></div>
+          {%else%}
+            <a>Tune in your ear and &#013; listen to all the secret messages! </a>
+          {% endif %}    
+        </div>
+    </div>
+  </div>
+</form>
+
+
+
+<div class="container p-3 my-3 bg-light text-dark">
+  <img src="{% static 'logo.png' %}"  alt="" style="  display: block;margin-left: auto;margin-right: auto;width: 60%; ">
+</div>
+
+<form class="seachbar" action= "" method = "post">
+  {% csrf_token %}
+  <div class="input-group" style="width: 40%; margin-left: 30%;">
+    <input type="search" class="form-control rounded" name ="srcInput"  placeholder="Search word in posts" aria-label="Search"
+      aria-describedby="search-addon" />
+    <button type="submit" class="btn btn-outline-success" name ="src" value = "src">Search</button>
+  </div>
+</form>
+
+
+<body >
+<div class="container" style=" max-height: 850px; overflow-x: scroll; overflow-x: hidden; padding-top: 20px;">  
+  {%for post in posts%}
+    <div class="container-fluid mt-12">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="card mb-4">
+                  <div class="card-header">
+                      <div class="media flex-wrap w-50 align-items-center "> <img src="https://i.imgur.com/iNmBizf.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                          <div class="media-body ml-3"> <a href="/users/{{post.user.id}}" data-abc="true">{{post.user}}</a>
+                            <div class="text-muted small">
+                                <div class="d-flex w-90 justify-content-between">   
+                                  <h5 class="mb-1"></h5>
+                                  
+                                </div> 
+                              </div>
+                          </div>
+                          <div class="text-muted small ml-3">
+                            <div></div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                    <p> <strong>{{post.title}}</strong> </p>
+                </div>
+                  {%if post.isPublic%}
+                    <div class="card-body" >
+                        <p> {{post.content}} </p>
+                    </div>
+                  {% else %}
+                    <div class="card-body" style="background-color: blanchedalmond;">
+                      <p> {{post.content}} </p>
+                    </div>
+                  {% endif %}
+
+                  <div class="text-muted small">
+                    <div class="d-flex w-90 justify-content-between">
+                      <h5 class="mb-1"></h5>
+                      <small>Posted: {{post.datetime}} </small>
+                    </div> 
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  {%endfor%}</div>
+</body>
+
+
+{% if messages %}
+<div class="alert alert-danger alert-dismissible fade show">
+<strong>Error!</strong> Yor post contains illegal data ! Not Published
+<button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+
+<ul class="messages">
+    {% for message in messages %}
+    <!--<li {% if message.tags %} class="{{ message.tags }}"{% endif %}> {{ message }}</li>-->
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container p-3 my-3 bg-light text-dark">
+Create New Post
+<form method = "post" action="">
+{% csrf_token %}
+{{form.as_p}}
+<button type="submit" class="btn btn-outline-success" name = "new_post">Post</button>
+</form>
+</div>
+{%endblock%}
+
+
+
+
+
+
+
+{%block content%} 
+
+{%endblock%}

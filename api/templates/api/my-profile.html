@@ -1,0 +1,75 @@
+{%extends 'api/base.html'%}
+{% load static%}
+{%block style%}
+<link href="{% static 'css/card.css' %}"  rel="stylesheet" media="screen">
+{%endblock%}
+
+
+
+{%block title%} {{user.username}} {%endblock%}
+{%block content%}
+
+
+<!-- Add icon library 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+-->
+<div class="card">
+  <img src="{% static 'emma.jpg' %}" alt= {{user.username}} style="width:100%">
+  <h1> {{user.username}} </h1>
+  <p>Joined on: {{user.date_joined}}</p>
+  <p>email : {{user.email}} </p>
+  <p>Credits : {{user.profile.credit}} </p>
+  <p class = "info ">Author of {{posts|length}} Posts</p>
+  <p class="title">{{bets|length}} bets:  {{betStats.profit}} profit </p>
+</div>
+
+<div class="container p-3 my-3 bg-light text-dark">
+    <div class="row">
+        <div class="col"><h4>Bid</h4></div>
+        <div class="col"><h4>Status</h4></div>
+        <div class="col"><h4>Currency</h4></div>    
+    </div>
+</div>
+
+    <div class="container p-1 my-1 bg-light text-dark" style=" max-height: 350px; overflow-x: scroll; overflow-x: hidden;" > 
+        {% for bet in bets %}               
+                    <div class="row">
+                        <div class="col">{{bet.bidAmount}}</div>
+                        <div class="col">
+                            {% if bet.status == 0 %}
+                            <p style="color:rgb(21, 145, 164);font-size:20px;">Open</p>
+                            {% elif bet.status == 1 %}
+                            <p style="color:rgb(106, 206, 126);font-size:20px;">W</p>
+                            {% elif bet.status == -1 %}
+                            <p style="color:rgb(206, 20, 20);font-size:20px;">L</p>
+                            {%endif%}
+                        </div>
+                        <div class="col">{{bet.currency}}</div>                              
+                    </div>
+        {% endfor %}
+    </div> 
+<div class="container p-3 my-3 bg-light text-dark">
+    <div class="row">
+        <div class="col"><h4>Total: {{bets|length}}</h4> </div>
+        <div class="col"><h4>Wins: {{betStats.wins}}   </h4></div>
+        <div class="col"><h4>Losses: {{betStats.losses}}</h4></div> 
+        {% if betStats.profit > 0 %}
+        <div class="col" style="color:rgb(26, 191, 40)""><h4>Profit: {{betStats.profit}} </h4></div> 
+        {% elif betStats.profit == 0 %}
+        <div class="col" style="color:rgb(8, 25, 27)""><h4>Profit: {{betStats.profit}} </h4></div> 
+        {% elif betStats.profit < 0 %}
+        <div class="col" style="color:rgb(199, 15, 15)""><h4>Profit: {{betStats.profit}} </h4></div> 
+        {%endif%}
+    </div>
+</div>
+
+
+<div class="container p-3 my-3 bg-light text-dark" style=" max-height: 350px; overflow-x: scroll; overflow-x: hidden;">
+Your posts: ( click to view on etherscan)
+    {% for post in posts %}
+        <div class="title"> <a href="https://ropsten.etherscan.io/tx/{{post.txId}}" target="_blank" style="color: #717171;text-decoration:none;" >{{post.title}}</a>   </div> 
+    {%endfor%}
+</div>
+
+
+{%endblock%}

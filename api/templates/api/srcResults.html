@@ -1,0 +1,61 @@
+{%extends 'api/base.html'%}
+{% load static%}
+{%block style%}
+<link href="{% static 'css/square.css' %}"  rel="stylesheet" >
+{%endblock%}
+{%block title%} Results! {%endblock%}
+
+{%block content%}
+<div class="container p-3 my-3 bg-white text-dark">
+    <a>Results for <b>{{srcInput}} </b>: {{posts|length}} occurrencies </a>
+</div>
+<body >
+    <div class="container" style=" max-height: 850px; overflow-x: scroll; overflow-x: hidden; padding-top: 20px;">  
+      {%for post in posts%}
+        <div class="container-fluid mt-12">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="card mb-4">
+                      <div class="card-header">
+                          <div class="media flex-wrap w-50 align-items-center "> <img src="https://i.imgur.com/iNmBizf.jpg" class="d-block ui-w-40 rounded-circle" alt="">
+                              <div class="media-body ml-3"> <a href="/users/{{post.user.id}}" data-abc="true">{{post.user}}</a>
+                                <div class="text-muted small">
+                                    <div class="d-flex w-90 justify-content-between">   
+                                      <h5 class="mb-1"></h5>
+                                      
+                                    </div> 
+                                  </div>
+                              </div>
+                              <div class="text-muted small ml-3">
+                                <div></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card-body">
+                        <p> <strong>{{post.title|safe}}</strong> </p>
+                    </div>
+                      {%if post.isPublic%}
+                        <div class="card-body" >
+                            <p> {{post.content|safe}} </p>
+                        </div>
+                      {% else %}
+                        <div class="card-body" style="background-color: blanchedalmond;">
+                          <p> {{post.content|safe}} </p>
+                        </div>
+                      {% endif %}
+    
+                      <div class="text-muted small">
+                        <div class="d-flex w-90 justify-content-between">
+                          <h5 class="mb-1"></h5>
+                          <small>Posted: {{post.datetime}} </small>
+                        </div> 
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    
+      {%endfor%}</div>
+    </body>
+
+{%endblock%}

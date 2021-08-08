@@ -1,0 +1,118 @@
+{%extends 'api/base.html'%}
+
+{%block title%} Bet {%endblock%}
+
+{% block content %}
+
+
+
+<form method= "post" action =""style="margin:100px;">
+
+      <div class="row" style="margin:20px;">
+            <div class="col-sm">Last Betting Price</div>
+            <div class="col-sm">Coin</div>
+            <div class="col-sm">Price</div>
+            <div class="col-sm">Trend </div>
+          {% for coin in coinsData %}
+                <div class="container p-3 my-3 bg-secondary text-white">
+                  <div class = "row">
+                    <div class="col-sm"><h4>{{coin.lastPrice}}</h4></div>
+                    <div class="col-sm">
+                        {%if coin.currency == "bitcoin" %}
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/BTC_Logo.svg/240px-BTC_Logo.svg.png" alt="Bitcoin" width = "45" height="45">
+                        {%else%}
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/147px-Ethereum_logo_2014.svg.png" alt="Ethereum" width = "25" height="45">
+                        {%endif%}
+                    </div>
+                    <div class="col-sm"> <h4>{{coin.currentPrice}}</h4></div>        
+                    <div class="col-sm">
+                          {%if coin.green == True %}
+                              <h4 style="color:rgb(106, 206, 126);">Mooning :)</h4>
+                          {%else%}
+                              <h4 style="color:rgb(196, 52, 52);">Diving! :(</h4>
+                          {%endif%}
+                    </div>
+                  </div>
+                </div>  
+            {%endfor%}
+      </div>
+
+</form>
+
+<style>
+select option {
+  margin: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgb(198, 72, 72);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+select option[value="ethereum"] {
+  background: rgba(54, 45, 86, 0.857);
+}
+
+select option[value="bitcoin"] {
+  background: rgb(255, 197, 6);
+  color: rgb(0, 0, 0);
+}
+</style>
+
+
+  <form class="bet buttons" action= "" method = "post">
+    <div class="container p-3 my-3 bg-white text-dark">
+      <div class= row>
+        <div class = "col-sm"><h4>Aviable Credits = {{user.profile.credit}} </h4> </div>
+        <div class = "col-sm">
+          <div class = "bet btn">
+            {% csrf_token %}
+
+            <div class= "betting btn manager"> 
+                {%if user.profile.isBetting == False%}            
+                  <select name="currencies" id="currencies">
+                    <option value="ethereum">Ethereum</option>
+                    <option value="bitcoin">Bitcoin</option>
+                  </select>
+                  <label for="quantity">How much ?</label> 
+                  <input type="number" id="quantity" name="quantity" required value= "0" min="1" max={{user.profile.credit}} >
+                  <button class="btn btn-success" name ="betUp" title = "Bet the price will rise" value = "betUp" type="submit">Up!</button>
+                  <button  class="btn btn-danger" type="submit" name ="betDown" title="Bet the price will fall" value="betDown" >Down!</button>
+                {%else%}
+                  <a>You are already betting!</a>
+                  <button class="btn btn-success" name ="betUp" value = "betUp" type="submit" disabled>Up!</button>
+                  <button  class="btn btn-danger" type="submit" name ="betDown" value="betDown" disabled >Down!</button>
+                {%endif%}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+<!-- Display the countdown timer in an element -->
+
+<script>
+  var timeleft = "{{time}}";
+  const divmod = (x, y) => [Math.floor(x / y), x % y];
+var downloadTimer = setInterval(function(){
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById("countdown").innerHTML = "Finished";
+    window.location.reload();
+  } else {
+    var t = divmod(timeleft,60)
+    var seconds = t[1];
+    var minutes = t[0];
+    document.getElementById("countdown").innerHTML = minutes + " min "+ seconds +"sec";
+  }
+  timeleft -= 1;
+}, 1000);
+</script>
+
+<div class="container p-3 my-3 bg-white text-dark" style= "margin: 35%">
+    <h5><p>Time left to fresh bets</p></h5>
+      <p><div id="countdown"></div></p>
+</div>
+{%endblock%}
+

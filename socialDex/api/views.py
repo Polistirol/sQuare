@@ -132,7 +132,7 @@ def square(response):
     user = response.user
     posts = filterForView(user)
     time = getRemainingTime( user.profile.expiringTime.replace(tzinfo=pytz.utc))
-    print(response.META.get('HTTP_X_FORWARDED_FOR', response.META.get('REMOTE_ADDR', '')).split(',')[0].strip())
+    #print(response.META.get('HTTP_X_FORWARDED_FOR', response.META.get('REMOTE_ADDR', '')).split(',')[0].strip())
     if response.method == "POST":
         # manage seach bar
         if response.POST.get("src", None) and response.POST.get("srcInput",None):

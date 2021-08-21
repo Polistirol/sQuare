@@ -1,5 +1,27 @@
 from web3 import Web3
 
+
+def sendTransaction(message):
+    w3 = Web3(Web3.HTTPProvider("https://ropsten.infura.io/v3/945570ed18a2491c8774c2a463f65aca"))
+    address = "0x26B9301b177C7C055EebE2aD8Db06C0ED3743310"
+    privateKey  = "0x4deadbee7ecd831598c9e6bc5c0b892ae6d9da23fbaac6a3922c512591dd180b"
+    nonce = w3.eth.getTransactionCount(address)
+    gasPrice = w3.eth.gasPrice
+    value = w3.toWei(0,"ether")
+    signedTx= w3.eth.account.signTransaction(dict(
+        nonce=nonce,
+        gasPrice = gasPrice,
+        gas = 100000,
+        to = "0x0000000000000000000000000000000000000000",
+        value = value,
+        data=message.encode("utf-8")
+        ),privateKey)
+    tx = w3.eth.sendRawTransaction(signedTx.rawTransaction)
+    txId = w3.toHex(tx)
+    return txId
+
+#The following class is a test wallet class, it's not used in this project atm
+'''
 class SiteWallet:
     def __init__(self):
         self.w3 = ""
@@ -65,27 +87,10 @@ class SiteWallet:
         byteStep = bytes.fromhex(encodedText)
         message = byteStep.decode("ASCII") 
         return message
+'''
 
-##### method for django app the class above is not used at the moment
 
-def sendTransaction(message):
-    w3 = Web3(Web3.HTTPProvider("https://ropsten.infura.io/v3/945570ed18a2491c8774c2a463f65aca"))
-    address = "0x26B9301b177C7C055EebE2aD8Db06C0ED3743310"
-    privateKey  = "0x4deadbee7ecd831598c9e6bc5c0b892ae6d9da23fbaac6a3922c512591dd180b"
-    nonce = w3.eth.getTransactionCount(address)
-    gasPrice = w3.eth.gasPrice
-    value = w3.toWei(0,"ether")
-    signedTx= w3.eth.account.signTransaction(dict(
-        nonce=nonce,
-        gasPrice = gasPrice,
-        gas = 100000,
-        to = "0x0000000000000000000000000000000000000000",
-        value = value,
-        data=message.encode("utf-8")
-        ),privateKey)
-    tx = w3.eth.sendRawTransaction(signedTx.rawTransaction)
-    txId = w3.toHex(tx)
-    return txId
+
 
 
 

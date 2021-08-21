@@ -130,6 +130,8 @@ def bid(request):
     
 def square(response):
     user = response.user
+    if not user.is_authenticated:
+        return render(response, "api/square.html",{})
     posts = filterForView(user)
     time = getRemainingTime( user.profile.expiringTime.replace(tzinfo=pytz.utc))
     #print(response.META.get('HTTP_X_FORWARDED_FOR', response.META.get('REMOTE_ADDR', '')).split(',')[0].strip())

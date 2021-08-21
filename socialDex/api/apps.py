@@ -7,7 +7,6 @@ class ApiConfig(AppConfig):
 
     def ready(self):
         from job import schedule
-        from api.wallet import SiteWallet
         try:
             schedule.startSchedule()
             print("The scheduler has started")

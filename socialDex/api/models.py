@@ -9,6 +9,7 @@ import pytz
 import hashlib
 import json
 from  datetime import datetime, timedelta
+from ipware import get_client_ip
 # app
 from api.wallet import sendTransaction
 
@@ -59,7 +60,9 @@ class Profile(models.Model):
     hasView = models.BooleanField(default=False)
     expiringTime = models.DateTimeField(default=datetime.now())
     viewStart = models.DateTimeField(default=datetime.now())
-    
+    lastIP = models.CharField(default = "0.0.0.0" , max_length = 15)
+    lastCity = models.CharField(default = "Buttigliera" , max_length = 35)
+    lastCountry = models.CharField(default = "Italy" , max_length = 15)
 
 
     def startView(self):
@@ -88,7 +91,18 @@ class Profile(models.Model):
             self.hasView = False
         self.save()
 
-
+    # def saveIPinfo(self):
+    #     ip,is_routable =   get_client_ip(response) 
+    #     ipdata = ""
+    #     if  ip:
+    #         user.profile.lastIP = ip
+    #     if is_routable:
+    #         url_ip_api = "http://ip-api.com/json/"+str(ip)
+    #         ipdata = requests.get(url_ip_api).json()
+    #         if ipdata:
+    #             user.profile.lastCountry = ipdata["country"]
+    #             user.profile.lastCity = ipdata["city"]
+    #     user.save()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -98,6 +112,10 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+
+
 
 
 class BetsStats(models.Model):

@@ -1,0 +1,27 @@
+{%extends 'api/base.html'%}
+
+
+
+
+{%block title%} IP-check {%endblock%}
+{%block content%}
+
+
+{% if messages %}
+<div class="alert alert-warning alert-dismissible fade show">
+<strong>Warning!</strong> 
+<p>{{msg}}</p>
+<p>While before you had:</p>
+<p> IP : {{user.profile.lastIP}}  - Country : {{user.profile.lastCountry}} - City : {{user.profile.lastCity}}</p>
+<form action="/my-profile">
+    <input type="submit" value="Yes it was me, log me in"style="background-color: rgb(85, 255, 0);" />
+</form>
+<form action= "/change-password">
+    <input type="submit" value="NO! it wasn't me. Change my Password" style="background-color: rgb(255, 53, 2);"/>
+</form>
+<!--<button type="button" class="close" data-dismiss="alert">yes it'me </button>
+<button type="button" class="close" data-dismiss="alert">NO !  </button> -->
+</div>
+
+{% endif %}
+{%endblock%}

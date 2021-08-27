@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.contrib import messages
 import requests
 import pytz
+from ipware import get_client_ip
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ def home(request):
 
 def userId(response,id):
     if response.user.is_authenticated:
-        user = User.objects.get(id=id)
+        user = User.objects.get(id=id) 
         bets = OpenBids.objects.all().filter(user = user)
         postsNumber = Post.objects.all().filter(user = user).count()
         profit =0 
@@ -127,11 +128,37 @@ def bid(request):
         print("cant bid")
         #bid impossible
         return
-    
+
+def checkIP(response):
+    user = response.user
+    ip,is_routable =   get_client_ip(response) 
+    ipdata = ""
+    if not ip:
+        msg = "It was impossible to get your IP !"
+        return render( response ,"api/my-ip.html",{"ip":ip,"msg":msg})
+
+    else:
+        url_ip_api = "http://ip-api.com/json/"+str(ip)
+        ipdata = requests.get(url_ip_api).json()
+        if ipdata["status"] == "success":
+            ip_country = ipdata["country"]
+            ip_city = ipdata["city"]
+            if not isIPChanged(user,ip,ip_city,ip_country):
+                return HttpResponseRedirect("/my-profile/")
+            else:
+                msg = "Your ip has changed ! IP : %s - Country : %s - City : %s" %(ip,ip_country,ip_city)
+                messages.info(response, " ")
+                return render( response ,"api/my-ip.html",{"ip":ip,"msg":msg})
+        return HttpResponseRedirect("/my-profile/")
+
+
+
+
 def square(response):
     user = response.user
     if not user.is_authenticated:
         return render(response, "api/square.html",{})
+
     posts = filterForView(user)
     time = getRemainingTime( user.profile.expiringTime.replace(tzinfo=pytz.utc))
     #print(response.META.get('HTTP_X_FORWARDED_FOR', response.META.get('REMOTE_ADDR', '')).split(',')[0].strip())
@@ -204,4 +231,13 @@ def manageView(user,spentCredits):
     user.profile.addTime(spentCredits)
     return
 
+def isIPChanged(user,ip,city,country):
+    if user.profile.lastIP != ip :
+        print("different ip")
+    if user.profile.lastCity != city :
+        print("different city")
+    if user.profile.lastCountry != country:
+        print("different country")
+        return True
+    else : return False
 

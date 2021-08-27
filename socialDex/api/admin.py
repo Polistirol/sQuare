@@ -10,7 +10,7 @@ class BetsStatsAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(admin.TabularInline):
     model = Profile
-    #list_display = ["credit"]
+    
 
 class PostAdmin(admin.ModelAdmin):
     model = Profile

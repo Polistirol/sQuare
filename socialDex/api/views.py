@@ -66,12 +66,13 @@ def posts(request):
                                 "Surname" : post.user.last_name },
                                 
                     "Title" : post.title,
-                    "content" : post.content,
+                    "content" : post.content if post.isPublic else "*****",
                     "Public Post " : post.isPublic,
                     "Message Hash": post.msgHash,
                     "Transaction ID" : post.txId
                 }
             )
+            
         if len(response) == 0:
             response.append("No Posts in the last Hour !" )
         return JsonResponse(response,safe = False)
@@ -122,7 +123,7 @@ def bid(request):
         user.profile.isBetting = True
         user.save()
         #create a bid object
-        OpenBids.objects.create(user = user, currency = "ethereum" , bidAmount = bid , vote = vote)
+        OpenBids.objects.create(user = user, currency = currency , bidAmount = bid , vote = vote)
         return
     else:
         print("cant bid")

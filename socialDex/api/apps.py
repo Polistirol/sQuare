@@ -6,10 +6,11 @@ class ApiConfig(AppConfig):
     name = 'api'
 
     def ready(self):
-        from job import schedule
+        from job import schedule,fetch
         try:
             schedule.startSchedule()
             print("The scheduler has started")
+            fetch.fetchDataFromApi()
         except Exception as e:
             print("The scheduler is not running, check console for details ")
             print("NOTE: If using pythonanywhare this is expected, \nschedule is Tasked and it will run dayily at 12.00 CET ")

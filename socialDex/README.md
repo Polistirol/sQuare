@@ -53,7 +53,8 @@ while admins can acces all the existing posts, as well as all the Users Info
 ## !! NOTE AL CORRETTORE !!
 ```buildoutcfg
     Ciao !
-    Nell'archivio caricato alla consegna del progetto, c'è un file: "note al correttore.txt" con altre info personali sulla realizzazione e credenziali per un admin user del sito hostato con ngrok
+    Nell'archivio caricato alla consegna del progetto, c'è un file: "note al correttore.txt"
+    con altre info personali sulla realizzazione e credenziali per un admin user del sito hostato con ngrok
 
     Grazie !
 ```

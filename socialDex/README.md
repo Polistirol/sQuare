@@ -7,7 +7,7 @@ This is a demo project, developed following the blockahin dev course from Start2
 such as Django framework, databases, blockchain interacion, APIs, user interfaces and html templates.\
 \
 The website is now LIVE ! \
-Check it out at:
+Check it out at: https://8a1a-84-213-29-161.ngrok.io
 \
 Below a list of the features of sQuare !
 

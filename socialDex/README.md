@@ -25,9 +25,10 @@ Forbidden words:
 ## Ethereum backed
 Every post is saved on the ropsten Ethereum testnet by the wallet address:
 ```buildoutcfg
-    0x26B9301b177C7C055EebE2aD8Db06C0ED3743310
-    https://ropsten.etherscan.io/address/0x26B9301b177C7C055EebE2aD8Db06C0ED3743310
+    0x26B9301b177C7C055EebE2aD8Db06C0ED3743310 
 ```
+https://ropsten.etherscan.io/address/0x26B9301b177C7C055EebE2aD8Db06C0ED3743310
+
 And can be explored at  https://ropsten.etherscan.io + /tx/"tx_id"
 a direct link to the user's post is provided at the users's personal page.
 
@@ -36,7 +37,7 @@ Users can use credits to interact with the website, in particular, Credits can b
 Upon registration, 10 credits are sent to every new user
 
 ## Listening Feature
-Users can spend Credits to unlock the ability to see Secret posts, otherwise invisibile.
+Users can spend Credits to unlock the ability to see Secret posts, otherwise invisibile.\
 10 credits = 10 minutes of Listening
 Listening minutes can be cumulated if the user desires to spend more credits
 

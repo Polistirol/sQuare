@@ -46,13 +46,22 @@
 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Download
+                Explorer
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/posts">Posts</a>
-                <!--<a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>-->
+                <a class="dropdown-item" href="/posts">Posts last 1h</a>
+                <!--<a class="dropdown-item" href="#">Another action</a>-->
+                {% if user.is_authenticated %}
+                    <div class="dropdown-divider"></div>                  
+                  {% if user.is_staff %}              
+                    <a class="dropdown-item" href="/posts/all" >All Posts </a>
+                    <a class="dropdown-item" href="/users/all" >All User</a>
+                {% else %}  
+                <a class="dropdown-item" href="/posts/all" style="opacity: .4; cursor: default !important; pointer-events: none;">All Posts </a>
+                <a class="dropdown-item" href="/users/all" style="opacity: .4; cursor: default !important; pointer-events: none;">All User</a>       
+                
+                {%endif%}
+                {%endif%}
               </div>
             </li>
           </ul>

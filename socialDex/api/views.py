@@ -31,57 +31,106 @@ def userId(response,id):
         return HttpResponseRedirect("/square/")
 
 def postId(response,id):
-        if response.user.is_authenticated:
-            post = Post.objects.get(id = id)
-            response ={
-                    "ID" : post.id,
-                    "datetime" : post.datetime,
-                    "author" : { "Username" : post.user.username ,
-                                "Name" : post.user.first_name ,
-                                "Surname" : post.user.last_name },
-                                
-                    "Title" : post.title,
-                    "content" : post.content,
-                    "Public Post " : post.isPublic
-                }
+        if response.user.is_authenticated and response.user.is_staff:
+            try :
+                post = Post.objects.get(id = id)
+                response ={
+                        "ID" : post.id,
+                        "datetime" : post.datetime,
+                        "author" : { "Username" : post.user.username ,
+                                    "Name" : post.user.first_name ,
+                                    "Surname" : post.user.last_name },
+                                    
+                        "Title" : post.title,
+                        "content" : post.content,
+                        "Public Post " : post.isPublic
+                    }
+                return JsonResponse(response,safe = False)
+            except:
+                response = {"Error - No Post with ID:" : id}
+                return JsonResponse(response,safe = False)
+        elif not response.user.is_staff:
+            response = "You don't have Admin permissions to see this page"
             return JsonResponse(response,safe = False)
         else: 
             return HttpResponseRedirect("/square/")
 
 
-def posts(request):
-    if request.user.is_authenticated:
+def posts(request, key = None ):
+    if request.user.is_authenticated :
         response = []
-        now = timezone.now().replace( second=0, microsecond=0)
-        one_hour_ago = now - timedelta(hours=1)
-        posts = Post.objects.filter(datetime__range=( one_hour_ago,now))
-        #posts = Post.objects.filter().order_by("-datetime")
-        for post in posts:
-            response.append(
-                {
-                    "ID" : post.id,
-                    "datetime" : post.datetime,
-                    "author" : { "Username" : post.user.username ,
-                                "Name" : post.user.first_name ,
-                                "Surname" : post.user.last_name },
-                                
-                    "Title" : post.title,
-                    "content" : post.content if post.isPublic else "*****",
-                    "Public Post " : post.isPublic,
-                    "Message Hash": post.msgHash,
-                    "Transaction ID" : post.txId
-                }
-            )
-            
-        if len(response) == 0:
-            response.append("No Posts in the last Hour !" )
+        posts=None
+        if key == None :
+            now = timezone.now().replace( second=0, microsecond=0)
+            one_hour_ago = now - timedelta(hours=1)
+            posts = Post.objects.filter(datetime__range=( one_hour_ago,now))
+
+        elif key == "all"and request.user.is_staff:
+            posts = Post.objects.filter().order_by("-datetime")
+        
+        elif key == "all" and not request.user.is_staff:         
+            response.append("You don't have Admin permissions to see this page")
+            return JsonResponse(response,safe = False)
+
+        if posts :
+            response.append({
+                            "Number of posts" : len(posts),
+                            "First post date" : posts[0].datetime,
+                            "Last post date" : posts[len(posts)-1].datetime
+                            })
+            for post in posts:
+                response.append(
+                    {
+                        "ID" : post.id,
+                        "datetime" : post.datetime,
+                        "author" : { "Username" : post.user.username ,
+                                    "Name" : post.user.first_name ,
+                                    "Surname" : post.user.last_name },
+                        "Title" : post.title,
+                        "content" : post.content if post.isPublic else "*****",
+                        "Public Post " : post.isPublic,
+                        "Message Hash": post.msgHash,
+                        "Transaction ID" : post.txId
+                    }) 
+        else:
+                response.append("No Posts found Here !" )
         return JsonResponse(response,safe = False)
     else: 
         return HttpResponseRedirect("/square/")
 
-def users(request):
-    users = User.objects.all()
-    return render(request,"api/users.html",{"users":users})
+def users(request, key = None):
+    if request.user.is_authenticated:
+        users = User.objects.all()
+        response=[]
+        if not key:
+            return render(request,"api/users.html",{"users":users})
+        elif key == "all":
+            if request.user.is_staff:
+                for user in users:
+                    postsInfo=[]
+                    userPosts= Post.objects.all().filter(user = user).order_by("-id")
+                    for post in userPosts:
+                        postsInfo.append({
+                            "Post ID":post.id,
+                            "Title":post.title,
+                            "Public": post.isPublic
+                        })                
+                    response.append({
+                                    "User ID" : user.id,
+                                    "Username" : user.username,
+                                    "Is Active" : user.is_active,
+                                    "Is Admin" : user.is_staff,
+                                    "Is Betting" : user.profile.isBetting,
+                                    "Has Vision" : user.profile.hasView,
+                                    "Posts Count" : len(userPosts),
+                                    "Posts Info" : postsInfo
+                                    })
+                return JsonResponse(response,safe = False)
+            else:
+                response.append("You don't have Admin permissions to see this page")
+                return JsonResponse(response,safe = False)
+    else: 
+        return HttpResponseRedirect("/square/")
 
 def profile(request):
     if request.user.is_authenticated:

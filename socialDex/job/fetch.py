@@ -11,7 +11,7 @@ def fetchDataFromApi():
         name = coins[i]
         curr = BetsStats.objects.get(currency = name)
         newPrice = dataFromAPI[coins[i]]["usd"]       
-        if  newPrice > curr.currentPrice :
+        if  newPrice >= curr.currentPrice :
             curr.green = True
         else: curr.green = False
         lastPrice_toSet = curr.currentPrice

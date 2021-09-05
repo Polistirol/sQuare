@@ -13,7 +13,9 @@ Every post is saved on the ropsten Ethereum testnet and can be seen at  https://
 
 A content-filter is activated, at the moment, every posts containing forbidden words , in either the title or the post's body" will be rejectet and not posted.
 Forbidden words:
-    "Hack"
+```buildoutcfg
+    Hack
+```
 
 ## In-app Credits Systems:
 Users can use credits to interact with the website, in particular, Credits can be spent to unlock special features or can be used in the betting system.

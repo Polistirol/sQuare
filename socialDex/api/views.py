@@ -19,14 +19,17 @@ def home(request):
 
 def userId(response,id):
     if response.user.is_authenticated:
-        user = User.objects.get(id=id) 
-        bets = OpenBids.objects.all().filter(user = user)
-        postsNumber = Post.objects.all().filter(user = user).count()
-        profit =0 
-        for bet in bets:
-            profit += bet.status * bet.bidAmount
-        userInfo = {"bets": len(bets),"profit":profit}
-        return render(response,"api/personal.html", {"user":user,"userInfo":userInfo,"postsNumber":postsNumber})
+        try:
+            user = User.objects.get(id=id) 
+            bets = OpenBids.objects.all().filter(user = user)
+            postsNumber = Post.objects.all().filter(user = user).count()
+            profit =0 
+            for bet in bets:
+                profit += bet.status * bet.bidAmount
+            userInfo = {"bets": len(bets),"profit":profit}
+            return render(response,"api/personal.html", {"user":user,"userInfo":userInfo,"postsNumber":postsNumber})
+        except :
+            return HttpResponseRedirect("/users/")
     else:
         return HttpResponseRedirect("/square/")
 

@@ -7,12 +7,12 @@ This is a demo project, developed following the blockahin dev course from Start2
 such as Django framework, databases, blockchain interacion, APIs, user interfaces and html templates.\
 \
 The website is now LIVE ! \
-Check it out at: https://8a1a-84-213-29-161.ngrok.io
-\
+Check it out at: https://8a1a-84-213-29-161.ngrok.io\
+ \
 Below a list of the features of sQuare !
 
 
-## Main Board Bard
+## Main Board
 Users can freely post on the main board, called sQuare.\
 Post can be Public or Private: public posts can be seen by all others registered users,
 while Secret posts can be see only by the users who have the "Listening" feature active (see below)
@@ -47,7 +47,7 @@ The price is updated from the API every 10 minutes, and users can bet in favour 
 When the prices update, winning bets will double the Credits of the bid, while loosing corresponds to the lost of the bid amount
 
 ## Data explorer
-The section called "JSON" serves a JSON representation of some contents of the website\
+The section called "Explorer" , in the navbar, serves a JSON representation of some contents of the website\
 All the users can view the content posted within the last hour,
 while admins can acces all the existing posts, as well as all the Users Info 
 
@@ -57,5 +57,6 @@ while admins can acces all the existing posts, as well as all the Users Info
     Nell'archivio caricato alla consegna del progetto, c'è un file: "note al correttore.txt"
     con altre info personali sulla realizzazione e credenziali per un admin user del sito hostato con ngrok
 
+    Corretto il tutto, questo messaggio si autodistruggerà :)
     Grazie !
 ```

@@ -17,7 +17,7 @@ Users can freely post on the main board, called sQuare.\
 Post can be Public or Private: public posts can be seen by all others registered users,
 while Secret posts can be see only by the users who have the "Listening" feature active (see below)
 
-A content-filter is activated, at the moment, every posts containing forbidden words , in either the title or the post's body" will be rejectet and not posted.
+A content-filter is activated, at the moment, every posts containing forbidden words , in either the title or the post's body" will be rejectet and not posted.\
 Forbidden words:
 ```buildoutcfg
     Hack

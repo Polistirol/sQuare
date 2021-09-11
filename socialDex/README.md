@@ -49,7 +49,7 @@ When the prices update, winning bets will double the Credits of the bid, while l
 ## Data explorer
 The section called "Explorer" , in the navbar, serves a JSON representation of some contents of the website\
 All the users can view the content posted within the last hour,
-while admins can acces all the existing posts, as well as all the Users Info 
+while admins can acces all the existing posts, as well as all the Users' informations 
 
 ## !! NOTE AL CORRETTORE !!
 ```buildoutcfg

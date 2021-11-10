@@ -44,19 +44,11 @@ Listening minutes can be cumulated if the user desires to spend more credits
 ## Betting system :
 Through to the CoinJeck API ( https://www.coingecko.com/en/api), users can bet Credits on the variation of the price of Bitcoin and Ethereum's crypto currencies.\
 The price is updated from the API every 10 minutes, and users can bet in favour of the price rising or dropping from the previous update.\
-When the prices update, winning bets will double the Credits of the bid, while loosing corresponds to the lost of the bid amount
+When the prices updates, winning bets will double the Credits of the bid, while loosing corresponds to the lost of the bid amount
 
 ## Data explorer
 The section called "Explorer" , in the navbar, serves a JSON representation of some contents of the website\
 All the users can view the content posted within the last hour,
 while admins can acces all the existing posts, as well as all the Users' informations 
 
-## !! NOTE AL CORRETTORE !!
-```buildoutcfg
-    Ciao !
-    Nell'archivio caricato alla consegna del progetto, c'è un file: "note al correttore.txt"
-    con altre info personali sulla realizzazione e credenziali per un admin user del sito hostato con ngrok
 
-    Corretto il tutto, questo messaggio si autodistruggerà :)
-    Grazie !
-```
